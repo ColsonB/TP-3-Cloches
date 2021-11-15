@@ -65,11 +65,20 @@ class user{
             $this->_nom = $data['Nom'];
             $this->_mdp = $data['Mdp'];
             $this->_status = $data['Admin'];
+            $_SESSION['id'] = $this->_id;
         }else{
             return "incorecte";
         }
     }
-    
+
+    /**
+    * function qui permet de se déconnecter de l'application Web.
+    *
+    */
+    public function deconnection(){
+        session_destroy();
+    }
+
 
 }
 ?>
