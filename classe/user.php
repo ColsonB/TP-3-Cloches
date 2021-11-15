@@ -40,7 +40,7 @@ class user{
             $requetprepar = $this->BDD->prepare("INSERT INTO `user`(`Nom`, `Mdp`, `Admin`) VALUES ('?','?','?')");
             $requetprepar->execute(array($nom, $mdp, 1));
         }else{
-            return "se nom est deja utiliser";
+            return "Ce nom est deja utiliser";
         }
 
     }
@@ -52,7 +52,7 @@ class user{
     * @param $mdp est le mots de passe entrer par l'utilisateur dans le formulaire de connection
     *
     */
-    public function coonection($nom, $mdp){
+    public function conection($nom, $mdp){
         $nom = htmlspecialchars($nom);
         $mdp = hash('sha256', $mdp);
         $requetprepar = $this->BDD->prepare("SELECT * FROM `user` WHERE `Nom` = ? AND `Mdp` = ?");
