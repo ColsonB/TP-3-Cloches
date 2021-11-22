@@ -1,0 +1,130 @@
+body { 
+    margin: 0; 
+    padding-bottom: 3rem;
+}
+
+#form { 
+    background: rgba(0, 0, 0, 0.15);
+    padding: 0.25rem; 
+    position: fixed; bottom: 0;
+    left: 0;
+    right: 0; 
+    display: flex; 
+    height: 4rem; 
+    backdrop-filter: blur(10px); 
+}
+
+body{
+    display: flex;
+    justify-content:center;
+    flex-direction: columns;
+    align-items: center;
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+}
+form {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 40px 60px;
+    border-radius: 10px;
+    min-width: 300px;
+}
+form h1{
+    color: #eb7371;
+    text-align:center;
+}
+
+form p.choose-email{
+    text-align:center;
+}
+form .inputs {
+    display: flex;
+    flex-direction: column;
+}
+form .inputs input[type='text'], input[type='password']{
+    padding: 15px;
+    border:none;
+    border-radius: 5px;
+    background-color:#f2f2f2;
+    outline:none;
+    margin-bottom: 15px;
+}
+form p.PageInscription{
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #878787;
+    text-align:center;
+}
+form p.PageConnexion{
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #878787;
+    text-align:center;
+}
+form button{
+    padding: 15px 25px;
+    border-radius: 5px;
+    border:none;
+    font-size: 15px;
+    color: #fff;
+    background-color: #eb7371;
+    outline:none;
+    cursor:pointer;
+}
+
+section.login{
+    display: none;
+}
+
+
+
+
+.ListeCloche
+{
+  line-height: 15px;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 12px;
+  text-align: center;
+  width: 40%;
+  position: relative;
+  border: 1px solid #A7A9AC;
+  background: #E9EAEB;
+  border-radius: 10px;
+  box-shadow: 3px 3px 7px #ccc;
+  padding: 1%;
+  margin: 5%;
+  margin-right: 50%;
+  display: none;
+}
+
+.Cloche
+{
+  width: 50%;
+  height: 50%;
+  text-align: center;
+  padding: 10px;
+  margin: 3%;
+  float: none;
+  line-height: 15px;
+  color: #58595B;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 12px;
+  width: 30%;
+  border: 1px solid #A7A9AC;
+  background: #E9EAEB;
+  border-radius: 10px;
+  box-shadow: 3px 3px 7px #ccc;
+  display: inline-block;
+}
+
+.ImageCloche
+{
+  width: 90%;
+  height: 80%;
+}
+
+h5 
+{
+  font-family: 'Maiden Orange',Arial,serif;  /*Police du texte*/
+  font-size: 18px;
+}
