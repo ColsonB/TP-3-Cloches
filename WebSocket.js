@@ -1,5 +1,5 @@
 // Créer une connexion WebSocket
-const socket = new WebSocket('ws://192.168.65.241:168');
+//const socket = new WebSocket('ws://192.168.65.241:168');
 
 
 // Écouter les messages
