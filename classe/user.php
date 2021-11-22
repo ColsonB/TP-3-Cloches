@@ -42,6 +42,7 @@ class user
                 $mdp = hash('sha256', $mdp);
                 $requetprepar = $this->_BDD->prepare("INSERT INTO `user`(`Nom`, `Mdp`, `Admin`) VALUES (?, ?, ?)");
                 $requetprepar->execute(array($nom, $mdp, '1'));
+                $this->conection($nom, $confMDP);
             } else {
                 return "Ce nom est deja utiliser";
             }
@@ -72,6 +73,7 @@ class user
             $this->_mdp = $data['Mdp'];
             $this->_status = $data['Admin'];
             $_SESSION['id'] = $this->_id;
+            echo '<meta http-equiv="refresh" content="0">';
         } else {
             return "incorecte";
         }
@@ -84,5 +86,6 @@ class user
     public function deconnection()
     {
         session_destroy();
+        echo '<meta http-equiv="refresh" content="0">';
     }
 }

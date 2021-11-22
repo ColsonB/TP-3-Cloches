@@ -55,7 +55,7 @@ form p.PageInscription{
     color: #878787;
     text-align:center;
 }
-form p.PageConnexion{
+form a.changement_page{
     font-size: 14px;
     margin-bottom: 20px;
     color: #878787;
@@ -71,12 +71,6 @@ form button{
     outline:none;
     cursor:pointer;
 }
-
-section.inscription{
-    display: none;
-}
-
-
 
 
 .ListeCloche
@@ -94,7 +88,6 @@ section.inscription{
   padding: 1%;
   margin: 5%;
   margin-right: 50%;
-  display: none;
 }
 
 .Cloche
@@ -127,4 +120,8 @@ h5
 {
   font-family: 'Maiden Orange',Arial,serif;  /*Police du texte*/
   font-size: 18px;
+}
+.changement_page{
+    text-decoration:none;
+
 }
