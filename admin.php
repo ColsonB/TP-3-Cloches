@@ -1,3 +1,28 @@
+<?php
+require "session.php";
+require "classe/user.php";
+$user = new user($BDD);
+if(!isset($_SESSION['id'])){
+    header("Location: index.php");
+}else{
+  $user->giveUser($_SESSION['id']);
+  $statue = $user->getStatue();
+  if($statue == 0){
+    header("Location: index.php");
+  }
+}
+
+if(isset($_POST['déconnexion'])){
+    $user->deconnection();
+}
+if(isset($_GET['suppr'])){
+  $user->supprUser($_GET['suppr']);
+  header("Location: admin.php");
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -18,7 +43,7 @@
           <!-- BreadCrumb -->
 
           <div class="pb-3">
-            <h1>Admin User</h1>
+            <h1>Panel Des Utilisateur :</h1>
           </div>
           <div class="row">
             <div class="col">
@@ -41,61 +66,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">
-                          <label class="custom-control custom-checkbox m-0 p-0">
-                            <input type="checkbox" class="custom-control-input table-select-row">
-                            <span class="custom-control-indicator"></span>
-                          </label>
-                        </th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>
-                          <span class="badge badge-pill badge-primary">Admin</span>
-                        </td>
-                        <td>
-                          <button onclick="window.location.href=''" class="btn btn-sm btn-primary">Edit</button>
-                          <button onclick="window.location.href=''" class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <label class="custom-control custom-checkbox m-0 p-0">
-                            <input type="checkbox" class="custom-control-input table-select-row">
-                            <span class="custom-control-indicator"></span>
-                          </label>
-                        </th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>
-                          <span class="badge badge-pill badge-primary">Author</span>
-                          <span class="badge badge-pill badge-primary">Developer</span>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <label class="custom-control custom-checkbox m-0 p-0">
-                            <input type="checkbox" class="custom-control-input table-select-row">
-                            <span class="custom-control-indicator"></span>
-                          </label>
-                        </th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>
-                          <span class="badge badge-pill badge-danger">Inactive</span>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-primary">Edit</button>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
+                      <?php $user->getUserPanelAdmin(); ?>
                     </tbody>
                   </table>
                 </div>
