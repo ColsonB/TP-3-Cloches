@@ -6,6 +6,7 @@ class user
     private $_nom;
     private $_mdp;
     private $_status;
+    private $_role;
     private $_BDD;
 
     //public
@@ -40,8 +41,8 @@ class user
             $exit = $vérifname->rowCount();
             if ($exit != 1) {
                 $mdp = hash('sha256', $mdp);
-                $requetprepar = $this->_BDD->prepare("INSERT INTO `user`(`Nom`, `Mdp`, `Admin`) VALUES (?, ?, ?)");
-                $requetprepar->execute(array($nom, $mdp, '0'));
+                $requetprepar = $this->_BDD->prepare("INSERT INTO `user`(`Nom`, `Mdp`, `status`,`Admin`) VALUES (?, ?, ?, ?)");
+                $requetprepar->execute(array($nom, $mdp, '0', '0'));
                 $this->conection($nom, $confMDP);
             } else {
                 return "Ce nom est deja utiliser";
@@ -71,7 +72,8 @@ class user
             $this->_id = $data['idUser'];
             $this->_nom = $data['Nom'];
             $this->_mdp = $data['Mdp'];
-            $this->_status = $data['Admin'];
+            $this->_status = $data['status'];
+            $this->_role = $data['Admin'];
             $_SESSION['id'] = $this->_id;
             echo '<meta http-equiv="refresh" content="0">';
         } else {
@@ -94,8 +96,8 @@ class user
         $data = $requetprepar->fetch();
         $this->_nom = $data['Nom'];
         $this->_mdp = $data['Mdp'];
-        $this->_status = $data['Admin'];
-
+        $this->_status = $data['status'];
+        $this->_role = $data['Admin'];
     }
     /**
      * function qui permet de supprimer des utilisateur en base de donner
@@ -103,10 +105,31 @@ class user
      * @param $idUser est l'id de l'utilisateur que on ve supprimer
      * 
      */
-    public function supprUser($idUser){
+    public function supprUser($idUser)
+    {
         $requetprepar = $this->_BDD->prepare("DELETE FROM `user` WHERE `idUser` = ?");
         $requetprepar->execute(array($idUser));
     }
+
+
+    /**
+     * function qui permet de activer et de désactiver l'asser au cloche des utilisateur en base de donner
+     * 
+     * @param $idUser est l'id de l'utilisateur que on ve supprimer
+     * 
+     */
+    public function changeStatus($idUser)
+    {
+        $requetprepar = $this->_BDD->prepare("SELECT `idUser`, `status` FROM `user` WHERE `idUser` = ?");
+        $racupData = $requetprepar->execute(array($idUser));
+        $data = $racupData->fetch();
+        if($data['status'] == 1){
+            $this->_BDD->query("UPDATE `user` SET `status`='1' WHERE `idUser` = $idUser");
+        }else{
+            $this->_BDD->query("UPDATE `user` SET `status`='0' WHERE `idUser` = $idUser");
+        }
+    }
+
 
     /**
      * function qui permet de recuperer les utilisateur en base de donner et les inserer dans le tableau du panel admin
@@ -126,7 +149,13 @@ class user
                 </th>
                 <td><?= $data['Nom'] ?></td>
                 <td><?= $data['Mdp'] ?></td>
-                <td>@mdo</td>
+                <td>
+                <?php if ($data['status'] == 1) { ?>
+                        <span class="badge badge-pill badge-primary">Activer</span>
+                    <?php } else { ?>
+                        <span class="badge badge-pill badge-danger">Désactiver</span>
+                    <?php } ?>
+                </td>
                 <td>
                     <?php if ($data['Admin'] == 1) { ?>
                         <span class="badge badge-pill badge-primary">Admin</span>
@@ -135,11 +164,39 @@ class user
                     <?php } ?>
                 </td>
                 <td>
-                    <button onclick="window.location.href=''" class="btn btn-sm btn-primary">Edit</button>
-                    <button onclick="window.location.href='?suppr=<?=$data['idUser'] ?>'" class="btn btn-sm btn-danger">Delete</button>
+                    <button onclick="window.location.href='addUserAdmin.php?modif=<?= $data['idUser'] ?>'" class="btn btn-sm btn-primary">Edit</button>
+                    <button onclick="window.location.href='?suppr=<?= $data['idUser'] ?>'" class="btn btn-sm btn-danger">Delete</button>
+                    <button onclick="window.location.href='?statue=<?= $data['idUser'] ?>'" class="btn btn-sm btn-danger">Activer</button>
                 </td>
             </tr>
 <?php }
+    }
+
+
+    /**
+     * function qui permet au Administrateur de modifier .
+     *
+     * @param $nom le nom de l'utilisateur que lon ve moddifier
+     * @param $mdp le mots de passe de l'utilisateur que lon ve moddifier
+     * @param $confMDP est la varéfication pour le mots de passe de l'utilisateur que lon ve moddifier
+     * 
+     */
+    public function modifUser($nom, $mdp, $confMDP, $role)
+    {
+        if ($mdp !=  $this->_mdp) {
+            if ($mdp == $confMDP) {
+                $mdp = hash('sha256', $mdp);
+            }
+        }
+        if ($nom == $this->_nom) {
+
+            $prepart = $this->_BDD->prepare("UPDATE `user` SET `Mdp`= ? ,`Admin`= ? WHERE `idUser` = ?");
+            $prepart->execute(array($mdp, $role, $this->_id));
+        } else {
+            $nom = htmlspecialchars($nom);
+            $prepart = $this->_BDD->prepare("UPDATE `user` SET `Nom`= ?, `Mdp`= ? ,`Admin`= ? WHERE `idUser` = ?");
+            $prepart->execute(array($nom, $mdp, $role, $this->_id));
+        }
     }
 
     /**
@@ -161,5 +218,48 @@ class user
     public function getStatue()
     {
         return $this->_status;
+    }
+
+    /**
+     * function qui permet de returner le role de l'utilisateur.
+     *
+     * @return $this->_role le grade de l'utilisateur
+     */
+    public function getRole()
+    {
+        return $this->_role;
+    }
+
+
+
+    /**
+     * function qui permet de returner le nom de l'utilisateur.
+     *
+     * @return $this->_nom le nom de l'utilisateur
+     */
+    public function getNom()
+    {
+        return $this->_nom;
+    }
+
+
+    /**
+     * function qui permet de returner le  mots de passe de l'utilisateur.
+     *
+     * @return $this->_mdp le mots de passe de l'utilisateur
+     */
+    public function getMdp()
+    {
+        return $this->_mdp;
+    }
+
+    /**
+     * function qui permet de returner l'id  de l'utilisateur.
+     *
+     * @return $this->_id de l'utilisateur
+     */
+    public function getId()
+    {
+        return $this->_id;
     }
 }

@@ -2,7 +2,7 @@
 session_start();
 
 try{
-    $BDD = new PDO('mysql:host=192.168.64.204;dbname=Cloche; charset=utf8', 'admin', 'admin');
+    $BDD = new PDO('mysql:host=192.168.64.134;dbname=Cloche; charset=utf8', 'admin', 'admin');
     $BDD->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }catch(Exception $e){
     die('Erreur : '. $e->getMessage());

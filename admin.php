@@ -6,8 +6,8 @@ if(!isset($_SESSION['id'])){
     header("Location: index.php");
 }else{
   $user->giveUser($_SESSION['id']);
-  $statue = $user->getStatue();
-  if($statue == 0){
+  $role = $user->getRole();
+  if($role == 0){
     header("Location: index.php");
   }
 }
@@ -17,6 +17,11 @@ if(isset($_POST['déconnexion'])){
 }
 if(isset($_GET['suppr'])){
   $user->supprUser($_GET['suppr']);
+  header("Location: admin.php");
+}
+
+if(isset($_GET['statue'])){
+  $user->changeStatus($_GET['statue']);
   header("Location: admin.php");
 }
 
