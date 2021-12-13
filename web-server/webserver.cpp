@@ -1,6 +1,7 @@
 ﻿#include "webserver.h"
 #include <unistd.h>
 #include <iostream>
+#include <QFile>
 
 using namespace std::this_thread; // sleep_for, sleep_until
 using namespace std::chrono; // nanoseconds, system_clock, seconds
@@ -12,12 +13,30 @@ WebServer::WebServer(QObject *parent) : QObject(parent) {
 
     QObject::connect(webServer, &QWebSocketServer::newConnection, this, &WebServer::onWebServerNewConnection);
 
+
+    //fichier pour l'ip des cloche
+    QFile fichier("/home/debian/Bureau/Projetdemerde/ip.txt");
+    fichier.open(QIODevice::ReadOnly);
+    QString contenu = fichier.readLine();
+    qDebug() << contenu;
+
+    /*QString contenuport = fichier.readLine(2);
+    qDebug() << contenuport;
+    fichier.close();*/
+
+    char buf[1024];
+    qint64 lineLength = fichier.readLine(buf, sizeof(buf));
+    if (lineLength != -1) {
+        qDebug() << buf;
+    }
+
+
     webServer->listen(QHostAddress::AnyIPv4, 16050);
-    qDebug() << "Test";
+    qDebug() << "Server Started";
 
     socket = new QTcpSocket();
-    socket->connectToHost("192.168.64.124", 502);
-
+    socket->connectToHost(contenu, 502);
+    //int( buf[0] )
 }
 
 void WebServer::onWebServerNewConnection() {
@@ -162,7 +181,7 @@ void WebServer::onWebClientCommunication(QString entryMessage) {
         trame6[11] = 0x00;
 
         QByteArray data6(trame6, 12);
-        //socket->write(data6);
+        socket->write(data6);
         socket->flush();
 
     }
