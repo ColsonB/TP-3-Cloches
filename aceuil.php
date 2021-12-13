@@ -1,16 +1,30 @@
 <?php
 require "session.php";
 require "classe/user.php";
+require "classe/histo.php";
 $user = new user($BDD);
-if(!isset($_SESSION['id'])){
+$histo = new hisorique($BDD);
+if (!isset($_SESSION['id'])) {
     header("Location: index.php");
+} else {
+    $user->giveUser($_SESSION['id']);
 }
 
-if(isset($_POST['déconnexion'])){
+if (isset($_POST['déconnexion'])) {
     $user->deconnection();
 }
+if (isset($_GET['cloche'])) {
+    if ($user->getStatue() == 1) {
+        $histo->ajouthisto($_SESSION['id'], $_GET['cloche']);
+        header("Location: aceuil.php");
+    } else {
+        header("Location: aceuil.php");
+    }
+}
+
 
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -18,138 +32,275 @@ if(isset($_POST['déconnexion'])){
     <title>Cloche en redstone</title>
     <link rel="stylesheet" href="Messagerie.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+
 </head>
 
 <body>
 
-    <div class="ListeCloche">
+    <div class="NormalListeCloche">
 
-        <div class="Cloche" onclick="test()">
-            <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche1()">
-            <h5 class="h5">Cloche 1</h5>
+        <h1>Cloche Solo</h1>
+
+        <?php if ($user->getStatue() == 1) { ?>
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche1()">
+                <h5 class="h5">Cloche 1</h5>
+            </div>
+
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche2()">
+                <h5 class="h5">Cloche 2</h5>
+            </div>
+
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche3()">
+                <h5 class="h5">Cloche 3</h5>
+            </div>
+
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche4()">
+                <h5 class="h5">Cloche 4</h5>
+            </div>
+        <?php } else { ?>
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                <h5 class="h5">Cloche 1</h5>
+            </div>
+
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                <h5 class="h5">Cloche 2</h5>
+            </div>
+
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                <h5 class="h5">Cloche 3</h5>
+            </div>
+
+            <div class="NormalCloche">
+                <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                <h5 class="h5">Cloche 4</h5>
+            </div>
+        <?php } ?>
+    </div>
+
+    <div class="Melodie">
+
+        <div class="ListeCloche">
+
+            <h1>Création de mélodie</h1>
+            <?php if ($user->getStatue() == 1) { ?>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="MelodieCloche1()">
+                    <h5 class="h5">Cloche 1</h5>
+                </div>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="MelodieCloche2()">
+                    <h5 class="h5">Cloche 2</h5>
+                </div>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="MelodieCloche3()">
+                    <h5 class="h5">Cloche 3</h5>
+                </div>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="MelodieCloche4()">
+                    <h5 class="h5">Cloche 4</h5>
+                </div>
+                <div class="Delay">
+
+                    <input placeholder="Delay" id="delay" class="input"></input>
+                    <button onclick="Delay()">J'ai choisie mon rythme</button>
+                    <button id="send" onclick="Sonnerie(Tableau)" class="input"> DJ Balance le son</button>
+
+                </div>
+            <?php } else { ?>
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                    <h5 class="h5">Cloche 1</h5>
+                </div>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                    <h5 class="h5">Cloche 2</h5>
+                </div>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                    <h5 class="h5">Cloche 3</h5>
+                </div>
+
+                <div class="Cloche">
+                    <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Noauto()">
+                    <h5 class="h5">Cloche 4</h5>
+                </div>
+
+                <div class="Delay">
+
+                    <input placeholder="Delay" id="delay" class="input"></input>
+                    <button onclick="Noauto()">J'ai choisie mon rythme</button>
+                    <button id="send" onclick="Noauto()" class="input"> DJ Balance le son</button>
+
+                </div>
+            <?php } ?>
         </div>
 
-        <div class="Cloche">
-            <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche2()">
-            <h5 class="h5">Cloche 2</h5>
-        </div>
+        <div>
+            <table id="Liste" class="Liste">
 
-        <div class="Cloche">
-            <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche3()">
-            <h5 class="h5">Cloche 3</h5>
-        </div>
+                <thead class="Liste">
+                    <th>Cloche</th>
+                    <th>Ordre
+                    <th>
+                </thead>
 
-        <div class="Cloche">
-            <input type="image" src="Cloche_dorée_ombrée.png" class="ImageCloche" onclick="Cloche4()">
-            <h5 class="h5">Cloche 4</h5>
+            </table>
         </div>
 
     </div>
-<form action="" method="post">
-    <input type="submit" value="déconnexion" name="déconnexion">
-</form>
+
+
+    <form action="" method="post">
+        <input type="submit" value="déconnexion" name="déconnexion">
+    </form>
+
 </body>
 
 <script>
-    let UserCorrect;
+    const socket = new WebSocket('ws://192.168.64.189:16050');
+    let Tableau = [];
+    let i = 1;
 </script>
 
-<script src="WebSocket.js"></script>
 <script>
     function Cloche1() {
 
-        /*Je vérifie que l'utilisateur est connecté*/
-        if (UserCorrect) {
+        var cloche = "cloche1";
 
-            /*J'envoie le message au format JSON au serveur afin qu'il puisse être stocké en BDD*/
-            var cloche = [{
-                "cloche1": 1,
-                "user": UserCorrect,
-            }];
-
-            socket.send(JSON.stringify(cloche));
-            console.log(cloche);
-
-        } else {
-
-            alert('Veulliez vous connecter pour détruire les oreilles de la salle');
-
-        }
+        socket.send(cloche);
+        console.log(cloche);
+        window.location.href = '?cloche=1';
+        //location.reload();
     }
 
     function Cloche2() {
 
-        /*Je vérifie que l'utilisateur est connecté*/
-        if (UserCorrect) {
-
-            /*J'envoie le message au format JSON au serveur afin qu'il puisse être stocké en BDD*/
-            var cloche = [{
-                "cloche1": 2,
-                "user": UserCorrect,
-            }];
-
-            socket.send(JSON.stringify(cloche));
-            console.log(cloche);
-
-        } else {
-
-            alert('Veulliez vous connecter pour détruire les oreilles de la salle');
-
-        }
+        var cloche = "cloche2";
+        socket.send(cloche);
+        console.log(cloche);
+        window.location.href = '?cloche=2';
+        //location.reload();
     }
 
     function Cloche3() {
 
-        /*Je vérifie que l'utilisateur est connecté*/
-        if (UserCorrect) {
+        var cloche = "cloche3";
 
-            /*J'envoie le message au format JSON au serveur afin qu'il puisse être stocké en BDD*/
-            var cloche = [{
-                "cloche1": 3,
-                "user": UserCorrect,
-            }];
+        socket.send(cloche);
+        console.log(cloche);
+        window.location.href = '?cloche=3';
+        //location.reload();
 
-            socket.send(JSON.stringify(cloche));
-            console.log(cloche);
-
-        } else {
-
-            alert('Veulliez vous connecter pour détruire les oreilles de la salle');
-
-        }
     }
 
     function Cloche4() {
 
-        /*Je vérifie que l'utilisateur est connecté*/
-        if (UserCorrect) {
+        var cloche = "cloche4";
 
-            /*J'envoie le message au format JSON au serveur afin qu'il puisse être stocké en BDD*/
-            var cloche = [{
-                "cloche1": 4,
-                "user": UserCorrect,
-            }];
+        socket.send(cloche);
+        console.log(cloche);
+        window.location.href = '?cloche=4';
+        //location.reload();
 
-            socket.send(JSON.stringify(cloche));
-            console.log(cloche);
+    }
 
+    function Noauto() {
+        alert('vous devais etre autoriser par les administrateur du site pour pouvoir faire sonner les cloche !!');
+    }
+
+    function Delay() {
+
+        TempsAttente = document.getElementById("delay").value;
+        var Delay = "Attendre " + document.getElementById("delay").value + "s";
+        TableauHtml(Delay, i);
+        let newLength = Tableau.push(TempsAttente);
+        alert("bonjour grégory");
+        document.getElementById('send').value = '';
+
+    }
+
+    function JsTableau(cloche) {
+
+        let newLength = Tableau.push(cloche)
+        console.log(Tableau)
+
+    }
+
+    function TableauHtml(NomCloche, OrdreNuméro) {
+        var TableauListe = document.getElementById('Liste').innerHTML += "<th>" + NomCloche + "<th> <th>" + OrdreNuméro + "<th>"
+
+        i++;
+    }
+
+    function Sonnerie(Tableau) {
+
+        document.getElementById("send").disabled = true;
+
+
+        if (Tableau[0] == undefined) {
+            console.log("Le tableau est vide")
+            document.getElementById("send").disabled = false;
         } else {
 
-            alert('Veulliez vous connecter pour détruire les oreilles de la salle');
+            for (n = 0; n < Tableau.length; n++) {
+                console.log(Tableau[n]);
+                socket.send(Tableau[n]);
+            }
+
+            document.getElementById("send").disabled = false;
+            Tableau.length = 0;
+
+            var Ligne = document.querySelector("tbody");
+            Ligne.remove();
 
         }
     }
 
-    /* Fonction pour faire apparaitre le formulaire de connexion*/
-    function afficheConnexion() {
-        document.querySelector('.login').style.display = 'flex';
-        document.querySelector('.inscription').style.display = 'none';
+    function MelodieCloche1() {
+
+        var cloche = "cloche1";
+
+        JsTableau(cloche)
+        TableauHtml("Cloche 1", i)
+
     }
 
-    /* Fonction pour faire apparaitre le formulaire d'incription*/
-    function afficheInscription() {
-        document.querySelector('.login').style.display = 'none';
-        document.querySelector('.inscription').style.display = 'flex';
+    function MelodieCloche2() {
+
+        var cloche = "cloche2";
+
+        JsTableau(cloche)
+        TableauHtml("Cloche 2", i)
+    }
+
+    function MelodieCloche3() {
+
+        var cloche = "cloche3";
+
+        JsTableau(cloche);
+        TableauHtml("Cloche 3", i)
+    }
+
+    function MelodieCloche4() {
+
+        var cloche = "cloche4";
+
+        JsTableau(cloche);
+        TableauHtml("Cloche 4", i)
     }
 </script>
 

@@ -121,12 +121,14 @@ class user
     public function changeStatus($idUser)
     {
         $requetprepar = $this->_BDD->prepare("SELECT `idUser`, `status` FROM `user` WHERE `idUser` = ?");
-        $racupData = $requetprepar->execute(array($idUser));
-        $data = $racupData->fetch();
+        $requetprepar->execute(array($idUser));
+        $data = $requetprepar->fetch();
         if($data['status'] == 1){
-            $this->_BDD->query("UPDATE `user` SET `status`='1' WHERE `idUser` = $idUser");
+            $requetprepar = $this->_BDD->prepare("UPDATE `user` SET `status`= ? WHERE `idUser` = ?");
+            $requetprepar->execute(array('0',$idUser));
         }else{
-            $this->_BDD->query("UPDATE `user` SET `status`='0' WHERE `idUser` = $idUser");
+            $requetprepar = $this->_BDD->prepare("UPDATE `user` SET `status`= ? WHERE `idUser` = ?");
+            $requetprepar->execute(array('1',$idUser));
         }
     }
 
@@ -166,7 +168,12 @@ class user
                 <td>
                     <button onclick="window.location.href='addUserAdmin.php?modif=<?= $data['idUser'] ?>'" class="btn btn-sm btn-primary">Edit</button>
                     <button onclick="window.location.href='?suppr=<?= $data['idUser'] ?>'" class="btn btn-sm btn-danger">Delete</button>
-                    <button onclick="window.location.href='?statue=<?= $data['idUser'] ?>'" class="btn btn-sm btn-danger">Activer</button>
+                    <?php
+                        if($data['status'] == 0){ ?>
+                            <button onclick="window.location.href='?statue=<?= $data['idUser'] ?>'" class="btn btn-sm btn-danger">Activer</button>
+                        <?php }else { ?>
+                            <button onclick="window.location.href='?statue=<?= $data['idUser'] ?>'" class="btn btn-sm btn-primary">désactiver</button>
+                        <?php } ?>
                 </td>
             </tr>
 <?php }
