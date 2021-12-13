@@ -8,8 +8,8 @@ if (!isset($_SESSION['id'])) {
     header("Location: index.php");
 } else {
     $admin->giveUser($_SESSION['id']);
-    $statue = $admin->getStatue();
-    if ($statue == 0) {
+    $role = $admin->getRole();
+    if ($role == 0) {
         header("Location: index.php");
     }
 }
@@ -38,7 +38,11 @@ if (!isset($_SESSION['id'])) {
                 <input type="password" id="Confirmpasswordmodif" name="Confirmpasswordmodif" placeholder="Confirmer votre mot de passe" value="<?= $user->getMdp() ?>">
             </div>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="admin" >
+                <?php if($user->getRole() == 1){ ?>
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="admin" checked>
+                <?php }else { ?>
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="admin" >
+                <?php } ?>
                 <label class="form-check-label" for="flexSwitchCheckChecked" >Administrateur</label>
             </div>
             <div align="center">
@@ -49,12 +53,12 @@ if (!isset($_SESSION['id'])) {
         <?php
         if (isset($_POST['modif'])) {
             if(isset($_POST['admin'])){
-                $role = 1;
+                $roleAdmin = 1;
             }else{
-                $role = 0;
+                $roleAdmin = 0;
             }
 
-            $user->modifUser($_POST['usernameModif'],$_POST['passwordModif'],$_POST['Confirmpasswordmodif'], $role);
+            $user->modifUser($_POST['usernameModif'],$_POST['passwordModif'],$_POST['Confirmpasswordmodif'], $roleAdmin);
         }
         ?>
     </section>

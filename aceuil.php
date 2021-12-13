@@ -38,6 +38,16 @@ if (isset($_GET['cloche'])) {
 
 <body>
 
+<div class="grand">
+<div class="head">
+    <h2>Cloches en RedStone</h2></div>
+        <div class="deco">
+            <form action="" method="post">
+            <button type="submit" value="déconnexion" name="déconnexion" class="monzgeg">Déconnexion</button>
+            </form>
+        </div>
+        </div>
+
     <div class="NormalListeCloche">
 
         <h1>Cloche Solo</h1>
@@ -164,9 +174,9 @@ if (isset($_GET['cloche'])) {
     </div>
 
 
-    <form action="" method="post">
+    <!--<form action="" method="post">
         <input type="submit" value="déconnexion" name="déconnexion">
-    </form>
+    </form>-->
 
 </body>
 
@@ -225,10 +235,9 @@ if (isset($_GET['cloche'])) {
     function Delay() {
 
         TempsAttente = document.getElementById("delay").value;
-        var Delay = "Attendre " + document.getElementById("delay").value + "s";
+        var Delay = "Attendre " + document.getElementById("delay").value + "ms";
         TableauHtml(Delay, i);
         let newLength = Tableau.push(TempsAttente);
-        alert("bonjour grégory");
         document.getElementById('send').value = '';
 
     }
