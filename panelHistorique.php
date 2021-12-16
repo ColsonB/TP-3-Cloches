@@ -14,7 +14,7 @@ if (!isset($_SESSION['id'])) {
     }
 }
 
-if (isset($_POST['déconnexion'])) {
+if (isset($_GET['deco'])) {
     $user->deconnection();
 }
 if (isset($_GET['suppr'])) {
@@ -31,11 +31,33 @@ if (isset($_GET['suppr'])) {
     <title>Cloche en redstone</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="stylesheet" href="Style/manu.css">
     <link rel="stylesheet" type="text/css" href="Style/admin.css" media="screen" />
 </head>
 
 <body>
+    <nav role="navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+                <a href="aceuil.php">
+                    <li>Acceuil</li>
+                </a>
+                <a href="admin.php">
+                    <li>Panel User</li>
+                </a>
+                <a href="panelHistorique.php">
+                    <li>Panel Log</li>
+                </a>
+                <a href="?deco" target="_blank">
+                    <li>Déconnection</li>
+                </a>
+            </ul>
+        </div>
+    </nav>
     <div class="adminx-container">
         <!-- Main Content -->
         <div class="adminx-content">

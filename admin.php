@@ -2,32 +2,31 @@
 require "session.php";
 require "classe/user.php";
 $user = new user($BDD);
-if(!isset($_SESSION['id'])){
-    header("Location: index.php");
-}else{
+if (!isset($_SESSION['id'])) {
+  header("Location: index.php");
+} else {
   $user->giveUser($_SESSION['id']);
   $role = $user->getRole();
-  if($role == 0){
+  if ($role == 0) {
     header("Location: index.php");
   }
 }
 
-if(isset($_POST['déconnexion'])){
-    $user->deconnection();
+if (isset($_GET['deco'])) {
+  $user->deconnection();
 }
-if(isset($_GET['suppr'])){
+if (isset($_GET['suppr'])) {
   $user->supprUser($_GET['suppr']);
   header("Location: admin.php");
 }
 
-if(isset($_GET['statue'])){
+if (isset($_GET['statue'])) {
   $user->changeStatus($_GET['statue']);
   header("Location: admin.php");
 }
 
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -36,11 +35,33 @@ if(isset($_GET['statue'])){
   <title>Cloche en redstone</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <link rel="stylesheet" href="Style/manu.css">
   <link rel="stylesheet" type="text/css" href="Style/admin.css" media="screen" />
 </head>
 
 <body>
+  <nav role="navigation">
+    <div id="menuToggle">
+      <input type="checkbox" />
+      <span></span>
+      <span></span>
+      <span></span>
+      <ul id="menu">
+        <a href="aceuil.php">
+          <li>Acceuil</li>
+        </a>
+        <a href="admin.php">
+          <li>Panel User</li>
+        </a>
+        <a href="panelHistorique.php">
+          <li>Panel Log</li>
+        </a>
+        <a href="?deco" target="_blank">
+          <li>Déconnection</li>
+        </a>
+      </ul>
+    </div>
+  </nav>
   <div class="adminx-container">
     <!-- Main Content -->
     <div class="adminx-content">

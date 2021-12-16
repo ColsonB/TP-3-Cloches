@@ -8,9 +8,11 @@ if (!isset($_SESSION['id'])) {
     header("Location: index.php");
 } else {
     $user->giveUser($_SESSION['id']);
+    $role = $user->getRole();
 }
 
-if (isset($_POST['déconnexion'])) {
+
+if (isset($_GET['deco'])) {
     $user->deconnection();
 }
 if (isset($_GET['cloche'])) {
@@ -32,21 +34,47 @@ if (isset($_GET['cloche'])) {
     <title>Cloche en redstone</title>
     <link rel="stylesheet" href="Messagerie.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="Style/manu.css">
 
 
 </head>
 
 <body>
+    <nav role="navigation">
+        <div id="menuToggle">
+            <input type="checkbox"/>
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+                <a href="aceuil.php">
+                    <li>Acceuil</li>
+                </a>
+                <?php if($role == 1){ ?>
+                <a href="admin.php">
+                    <li>Panel User</li>
+                </a>
+                <a href="panelHistorique.php">
+                    <li>Panel Log</li>
+                </a>
+            <?php } ?>
+                <a href="?deco" target="_blank">
+                    <li>Déconnection</li>
+                </a>
+            </ul>
+        </div>
+    </nav>
 
-<div class="grand">
-<div class="head">
-    <h2>Cloches en RedStone</h2></div>
-        <div class="deco">
+    <div class="grand">
+        <div class="head">
+            <h2>Cloches en RedStone</h2>
+        </div>
+        <!--<div class="deco">
             <form action="" method="post">
-            <button type="submit" value="déconnexion" name="déconnexion" class="monzgeg">Déconnexion</button>
+                <button type="submit" value="déconnexion" name="déconnexion" class="monzgeg">Déconnexion</button>
             </form>
-        </div>
-        </div>
+        </div> -->
+    </div>
 
     <div class="NormalListeCloche">
 
@@ -172,11 +200,6 @@ if (isset($_GET['cloche'])) {
         </div>
 
     </div>
-
-
-    <!--<form action="" method="post">
-        <input type="submit" value="déconnexion" name="déconnexion">
-    </form>-->
 
 </body>
 
