@@ -15,7 +15,7 @@ WebServer::WebServer(QObject *parent) : QObject(parent) {
 
 
     //fichier pour l'ip des cloche
-    QFile fichier("/home/debian/Bureau/Projetdemerde/ip.txt");
+    QFile fichier("/home/debian/Bureau/Projetdemerde/ip.ini");
     fichier.open(QIODevice::ReadOnly);
     QString contenu = fichier.readLine();
     qDebug() << contenu;
