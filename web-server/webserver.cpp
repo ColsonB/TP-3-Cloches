@@ -231,8 +231,8 @@ void WebServer::onWebClientCommunication(QString entryMessage) {
 
     if( data !=  "cloche1" &&  data != "cloche2" &&  data != "cloche3" &&  data != "cloche4" ) {
 
-        qDebug() << "J'attend" + data;
-        sleep_for(seconds(data.toInt()));
+        qDebug() << "J'attend " + data;
+        sleep_for(milliseconds(data.toInt()));
 
     }
 
